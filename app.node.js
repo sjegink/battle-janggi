@@ -12,6 +12,7 @@ require(process.cwd() + '/lib/utils/promiseUtils')();
 	const expressApp = express();
 	const router_dynamic = express.Router();
 	const router_static = express.Router().use("/", express.static(`${process.cwd()}/static`));
+	
 	await (async function loadControllersInDir(router,dirPath){
 		await fs.readdir(dirPath).then(async entryNames=>{
 			Promise.forEach(entryNames, async entryName=>{
@@ -23,7 +24,7 @@ require(process.cwd() + '/lib/utils/promiseUtils')();
 					if(entryInfo.isDirectory()){
 						const childRouter = express.Router();
 						await loadControllersInDir(childRouter, entryFullPath);
-						router.use(entryName, childRouter);
+						router.use("/"+entryName, childRouter);
 					}else if(/\.js$/.test(entryName)){
 						let controller = require(entryFullPath);
 						let pathName = controller.name;
