@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			p.disabled { color:#999; }
+		</style>
+		<script type="text/javascript">
+			let socket = null;
+			async function connect(btn){
+				const uiBox = btn.parentNode;
+				console.log();
+				socket = io.connect('http://localhost', {path: "/socket.io", transports: ['websocket']});
+				socket.emit('hello', {data:13});
+				socket.on('echo', data=>{console.log('echo from server',data)});
+				socket.on('close', data=>{
+					drawMessage(`Server : "GO AWAY"`);
+					socket.close();
+					socket = null;
+					drawInitUI();
+				});
+				socket.on('who', ()=>{
+					drawMessage(`Server : "WHO?"`);
+					let iam = uiBox.querySelector('input').value;
+					socket.emit('iam', {
+						roomId: iam,
+					});
+					drawMessage(`Client : "I AM ${iam}"`);
+					socket.emit('hello', {data:28});
+				});
+				drawMessage("(Socket Connected)");
+			}
+
+			function drawUI(...args){
+				const uiBox = document.createElement('div');
+				args.forEach(({tagName,attr,style,content})=>{
+					let el = document.createElement(tagName??'div');
+					Object.assign(el.style, style??{});
+					Object.entries(attr??{}).forEach(([attrName,attrValue])=>{
+						el.setAttribute(attrName, attrValue);
+					});
+					if(content){
+						el.innerHTML = "";
+						if(!Array.isArray(content)) content = [content];
+						content.forEach(ctx=>{
+							if(typeof ctx==='string'){
+								el.innerHTML += ctx;
+							}else if(ctx instanceof HTMLElement){
+								el.appendChild(ctx);
+							}
+						});
+					}
+					uiBox.appendChild(el);
+				});
+				previousUI = document.body.children[0];
+				document.body.insertBefore(uiBox, previousUI);
+				previousUI.childNodes.forEach(el=>{ el.disabled = true; el.classList.add("disabled")});
+			}
+
+			function drawInitUI(){
+				return drawUI({
+					tagName: 'input',
+					attr: {value:"test"},
+				},{
+					tagName: 'button',
+					attr: {onclick:"connect(this)"},
+					content: "CONN",
+				},{
+					tagName: 'button',
+					attr: {onclick:"hello(this)"},
+					content: "HELLO",
+				});
+			}
+
+			function drawMessage(text){
+				return drawUI({
+					tagName: 'p',
+					content: text,
+				});
+			}
+
+			function sleep(millis){
+				return new Promise(resolve=>setTimeout(resolve,millis));
+			}
+		</script>
+		<script src="/socket.io/socket.io.js"></script>
+	</head>
+	<body onload="drawInitUI()">
+		<div></div>
+	</body>
+</html>
