@@ -13,8 +13,14 @@ function redrawBoard(newCanvasSize){
 	// check size
 	if(0 < newCanvasSize && canvasSize != newCanvasSize){
 		canvasSize = newCanvasSize;
+		Object.assign(canvas.parentNode.style,{
+			width: `${canvasSize}px`,
+			height: `${canvasSize}px`,
+			fontSize: `${Math.floor(canvasSize/2)}px`,
+		})
 		canvas.setAttribute('width', canvasSize);
 		canvas.setAttribute('height', canvasSize);
+		
 	}
 
 	// fill background
@@ -37,36 +43,35 @@ function redrawBoard(newCanvasSize){
 
 
 function drawChip(chipInfo){
-	const {ctx} = getCanvasAndContext();
+	const {canvas,ctx} = getCanvasAndContext();
 	const {0:cx,1:cy} = coord(chipInfo.x, chipInfo.y);
-	let wFull = (coord(1) - coord(0)) * 7/8;
-	let wSide = wFull / (1 + 2/Math.sqrt(2));
 
 	// draw octagon
-	ctx.fillStyle = COLOR_CHIP_BG;
-	ctx.beginPath();
-	ctx.moveTo(cx-wSide/2, cy-wFull/2);
-	ctx.lineTo(cx+wSide/2, cy-wFull/2);
-	ctx.lineTo(cx+wFull/2, cy-wSide/2);
-	ctx.lineTo(cx+wFull/2, cy+wSide/2);
-	ctx.lineTo(cx+wSide/2, cy+wFull/2);
-	ctx.lineTo(cx-wSide/2, cy+wFull/2);
-	ctx.lineTo(cx-wFull/2, cy+wSide/2);
-	ctx.lineTo(cx-wFull/2, cy-wSide/2);
-	ctx.closePath();
-	ctx.fill();
-
-	// draw identity
-	let label = chipInfo.label;
-	if(typeof label!='string' || label.length!=1){
-		console.warn(`Invalid Chip Label '${label}', it will be replaced.`);
-		label = "無";
-	}
-	ctx.fillStyle = chipInfo.isMine ? COLOR_CHIP_FG_FRIENDLY : COLOR_CHIP_FG_ENEMY;
-	ctx.textAlign = "center";
-	ctx.textBaseline = "middle";
-	ctx.font = `${Math.floor((wSide+wFull)/2)}px serif`;
-	ctx.fillText(label, cx,cy);
+	canvas.parentNode.appendChild((el_chip=>{
+		Object.assign(el_chip.style,{
+			top: `${cy}px`,
+			left: `${cx}px`,
+		});
+		el_chip.className = "div_chip";
+		el_chip.appendChild((el_octagon=>{
+			el_octagon.className = "div_chip__octagon";
+			return el_octagon;
+		})(document.createElement('div')));
+		el_chip.appendChild((el_label=>{
+			let label = chipInfo.label;
+			if(typeof label!='string' || label.length!=1){
+				console.warn(`Invalid Chip Label '${label}', it will be replaced.`);
+				label = "無";
+			}
+			el_label.innerHTML = label;
+			el_label.className = "div_chip__label";
+			Object.assign(el_label.style, {
+				color: chipInfo.isMine ? COLOR_CHIP_FG_FRIENDLY : COLOR_CHIP_FG_ENEMY,
+			});
+			return el_label;
+		})(document.createElement('div')));
+		return el_chip;
+	})(document.createElement('div')));
 }
 
 function getCanvasAndContext(){

@@ -1,0 +1,58 @@
+.board-container {
+	position: relative;
+}
+
+.div_chip {
+	position: absolute;
+	z-index: 10;
+	width: calc(100% / 9);
+	height: calc(100% / 9);
+	transition-duration:100ms;
+}
+.div_chip:before {
+	content: '';
+	position: absolute;
+	z-index: 0;
+	display: block;
+	top: -44%; left: -44%;
+	width: 88%; height: 88%;
+	background: transparent url('/images/octagon.svg') center center no-repeat;
+	background-size: contain;
+	filter: brightness(0) blur(.5vh);
+	opacity: .875;
+	transform: scale(.95);
+	transition-duration:100ms;
+}
+.div_chip.is-moving {
+	z-index: 11;
+	transform: translate(-50%,-50%) scale(1.1) translate(50%,50%);
+
+}
+.div_chip.is-moving:before {
+	opacity: .4;
+	transform: scale(1.1);
+}
+
+.div_chip > * {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	width: 87.5%;
+	height: 87.5%;
+	transform: translate(-50%,-50%);
+}
+
+.div_chip__octagon {
+	background: transparent url('/images/octagon.svg') center center no-repeat;
+	background-size: contain;
+}
+
+.div_chip__label {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	font-size: 13.5%;
+	pointer-events: none;
+}

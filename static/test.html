@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style type="text/css">
+			html,body { width:100vw; height:100vh; margin:0; }
+		</style>
+		<link type="text/css" rel="stylesheet" href="includes/boardStyle.css"></link>
+		<script type="text/javascript" src="includes/boardManager.js"></script>
+		<script type="text/javascript">
+			const promise_domLoad = new Promise(resolve=>{
+				document.addEventListener('DOMContentLoaded',()=>resolve());
+			});
+			!async function(){
+				await Promise.all([promise_domLoad]);
+				redrawBoard(800);
+				const chips = [{
+					x:0,y:2, label:"馬", isMine:true,
+				},{
+					x:3,y:2, label:"象", isMine:false,
+				},{
+					x:4,y:2, label:"車", isMine:false,
+				},{
+					x:2,y:3, label:"包", isMine:true,
+				},{
+					x:3,y:3, label:"卒", isMine:false,
+				},{
+					x:4,y:3, label:"兵", isMine:true,
+				},{
+					x:2,y:4, label:"士", isMine:false,
+				},{
+					x:3,y:4, label:"將", isMine:true,
+				},{
+					x:4,y:4, label:"甲", isMine:false,
+				}];
+				chips.forEach(drawChip);
+			}();
+		</script>
+	</head>
+	<body>
+		<div class="board-container">
+			<canvas class="board">
+			</canvas>
+		</div>
+	</body>
+</html>
