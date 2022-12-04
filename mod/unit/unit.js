@@ -5,9 +5,9 @@ const fs = require('fs').promises;
 /**
  * @abstract
  * @class
- * @name Chip
+ * @name Unit
  */
-global.Chip = module.exports = class Chip{
+global.Unit = module.exports = class Unit{
 
 	label;
 	side;
@@ -37,30 +37,30 @@ global.Chip = module.exports = class Chip{
 	 * Action without targeting.
 	 * @type {Array<ActionInfo>}
 	 * @member {string} title - to display on action UI
-	 * @member {string<url|ChipLabel>} icon - to display on action UI
+	 * @member {string<url|UnitLabel>} icon - to display on action UI
 	 * @member {number} cost - this action costs gold
 	 * @member {function} onAction
 	 */
 	actions;
 
 	/** this function fired whenever the turn pointer come back. */
-	onTurnCome(chip){}
-	/** this function includes logics only absolutely related with this chip. */
-	onMove(pos,chip){}
-	/** this function includes logics only never related with the chip who moved. */
-	onTargeted(chip){}
+	onTurnCome(unit){}
+	/** this function includes logics only absolutely related with this unit. */
+	onMove(pos,unit){}
+	/** this function includes logics only never related with the unit who moved. */
+	onTargeted(unit){}
 
-	// == can otherChips do their act ==
+	// == can otherUnits do their act ==
 
-	/** @return {boolean} notify the other chip can target this or not before that move. */
-	checkTargetable(chip){ return this.side != chip.side; }
-	/** @return {boolean} notify the other chip can pass this to beyond or not before that move. */
-	checkPassable(chip){ return false; }
+	/** @return {boolean} notify the other unit can target this or not before that move. */
+	checkTargetable(unit){ return this.side != unit.side; }
+	/** @return {boolean} notify the other unit can pass this to beyond or not before that move. */
+	checkPassable(unit){ return false; }
 }
 
-Chip.TypeDef = class ChipTypeDef{}
+Unit.TypeDef = class UnitTypeDef{}
 
-Chip._loadingPromise = (async ()=>{
+Unit._loadingPromise = (async ()=>{
 	fs.readdir(__dirname).then(async entryNames=>{
 		Promise.forEach(entryNames, async entryName=>{
 			const stat = await fs.stat(`${__dirname}/${entryName}`);

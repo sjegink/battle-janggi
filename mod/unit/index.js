@@ -1,12 +1,12 @@
 'use strict';
 /**
- * Chip
+ * Unit
  * @since 2022-12-03
  * @author sjeg<sjegink@gmail.com>
  * 
- * Define identify and action by each types of Chip(Minion/Unit)
+ * Define identify and action by each types of Unit(Minion/Unit)
  */
-const Chip = module.exports = require('./chip.js');
+const Unit = module.exports = require('./unit.js');
 
 const fs = require('fs').promises;
 
@@ -15,7 +15,7 @@ const fs = require('fs').promises;
 	fs.readdir(__dirname+"/"+subdirName).then(async entryNames=>{
 		entryNames.forEach(name=>{
 			name = name.replace(/\W.*/,"");
-			Chip.TypeDef[name] = require(__dirname+"/"+subdirName+"/"+name);
+			Unit.TypeDef[name] = require(__dirname+"/"+subdirName+"/"+name);
 		});
 	});
 })("typeDefs");
@@ -24,11 +24,11 @@ const fs = require('fs').promises;
 [
 	'docs',
 ].forEach(subdirName=>{
-	Chip[subdirName] = {};
+	Unit[subdirName] = {};
 	fs.readdir(__dirname+"/"+subdirName).then(async entryNames=>{
 		entryNames.forEach(name=>{
 			name = name.replace(/\W.*/,"");
-			Chip[subdirName][name] = require(__dirname+"/"+subdirName+"/"+name);
+			Unit[subdirName][name] = require(__dirname+"/"+subdirName+"/"+name);
 		});
 	});
 });

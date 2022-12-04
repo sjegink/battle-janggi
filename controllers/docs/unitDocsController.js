@@ -1,6 +1,6 @@
-module.exports.name = "/chip";
+module.exports.name = "/unit";
 module.exports.get = async (req,res)=>{
-	let text = Chip.docs.getMD().join("\n\n");
+	let text = Unit.docs.getMD().join("\n\n");
 	if(text==null){
 		res.send(404);
 	}

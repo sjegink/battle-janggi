@@ -1,8 +1,8 @@
 'use strict';
 
-const Chip = require(`../chip.js`);
+const Unit = require(`../unit.js`);
 
-module.exports = Object.freeze(Object.assign(new Chip.TypeDef(),{
+module.exports = Object.freeze(Object.assign(new Unit.TypeDef(),{
 	label: "將",
 	desc: "",
 
@@ -48,7 +48,7 @@ module.exports = Object.freeze(Object.assign(new Chip.TypeDef(),{
 		},
 	],
 
-	onTurnCome: (chip)=>{
-		chip.side.earn();
+	onTurnCome: (unit)=>{
+		unit.side.earn();
 	},
 }));
