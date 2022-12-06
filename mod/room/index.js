@@ -2,23 +2,18 @@
 
 /**
  * Room
- * @since 2022-12-04
+ * @since 2022-12-06
  * @author sjeg<sjegink@gmail.com>
  * 
- * Manage logical process of gameplay in each room.
+ * Room and related Objects.
  */
-const Room = module.exports = httpServer=>{
-	require('./socket')(httpServer);
-};
+const Room = module.exports = require('./room');
+Room.Side = require('./side');
+Room.Field = require('./field');
 
-Room.SIZE = 9;
-
-const fs = require('fs').promises;
-const Field = require('./field');
-
-// import subdir
+// load socket listenerPack
 [
-	'modules',
+	'socket'
 ].forEach(subdirName=>{
 	Room[subdirName] = {};
 	fs.readdir(__dirname+"/"+subdirName).then(async entryNames=>{

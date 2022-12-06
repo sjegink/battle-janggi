@@ -7,6 +7,9 @@
  * 
  */
 const self = module.exports = init;
+const ListenerPack = Object.fromEntries([
+	lobby,
+].map(name=>[name,require(`./${name}`)]));
 
 function init(httpServer){
 	const io = self.socketIO = require('socket.io')(httpServer, {path: "/socket.io"});
@@ -15,13 +18,18 @@ function init(httpServer){
 
 function onConnect(userSocket){
 
+	// demand his identity.
 	console.log('누꼬');
 	userSocket.emit('echo', "who");
 	userSocket.emit("who", {});
+
 	let tm = setTimeout(()=>{
 		userSocket.emit('close');
 	}, 1000);
 	userSocket.on('iam', data=>{
+		if(data.userToken){
+			userSocket.emit('warn', "You are not ready to accept your userToken");
+		}
 		clearTimeout(tm);
 		console.log("iam come", data.roomId);
 		userSocket.removeAllListeners('who');
