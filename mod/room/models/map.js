@@ -2,7 +2,7 @@
 
 module.exports = Object.freeze(new function(){
 
-	const Field = require('../field.js');
+	const Field = require('./field.js');
 	const MAP_SIZE = 9;
 
 	/**

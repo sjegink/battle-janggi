@@ -7,9 +7,12 @@
  * 
  * Room and related Objects.
  */
-const Room = module.exports = require('./room');
-Room.Side = require('./side');
-Room.Field = require('./field');
+const Room = module.exports = require('./models/room');
+Room.Side = require('./models/side');
+Room.Field = require('./models/field');
+Room.Map = require('./models/map');
+
+const fs = require('fs').promises;
 
 // load socket listenerPack
 [

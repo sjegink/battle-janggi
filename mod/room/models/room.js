@@ -15,7 +15,7 @@ const Room = module.exports = class Room {
 // define static members
 Object.freeze(function(){
 
-	const Map = require('./map.js.js.js');
+	const Map = require('./map.js');
 	const Uuid = require(process.cwd() + '/lib/utils/uuid');
 	const roomDirectory = {};
 	const roomByToken = {};
