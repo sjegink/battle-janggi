@@ -1,6 +1,6 @@
 'use strict';
 
-const Player = require('../player');
+const Player = require(process.cwd()+'/mod/player');
 
 const Side = module.exports = class Side {
 	id;
