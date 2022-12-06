@@ -7,7 +7,7 @@
 	DATABASE NOT ATTACHED TO THIS PROJECT YET.
 	AT NOW, JUST MEMORY-BASE STORAGE, THAT'S ALL.
  */
-module.exports = new function(PlayerClass){
+module.exports = PlayerClass=>new function(){
 
 	const indexBySeq = [];
 	const indexById = {};

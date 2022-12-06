@@ -23,6 +23,7 @@ const Player = module.exports = class Player {
 Object.freeze(function(){
 
 	const Repo = require('./repository')(this);
+	const fs = require('fs').promises;
 
 	/**
 	 * @name createPlayer
@@ -35,7 +36,7 @@ Object.freeze(function(){
 			Repo.save(player);
 		}
 		return playerId;
-	}
+	};
 
 	/**
 	 * @name getPlayer
@@ -47,7 +48,7 @@ Object.freeze(function(){
 			player.touch();
 		}
 		return player;
-	}
+	};
 
 	// load socket listenerPack
 	[
