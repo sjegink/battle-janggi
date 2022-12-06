@@ -9,9 +9,12 @@ new Promise(async ()=>{
 	const httpServer = await require(process.cwd() + '/lib/core/expressServer')(80);
 
 	// import modules
-	// require(process.cwd() + '/mod/chip');
-	require(process.cwd() + '/mod/room')(httpServer);
-	// require(process.cwd() + '/mod/lobby');
+	global.Unit = require(process.cwd() + '/mod/unit');
+	global.Player = require(process.cwd() + '/mod/player');
+	global.Room = require(process.cwd() + '/mod/room');
+	const socketServer = await require(process.cwd() + '/lib/core/socketServer')(httpServer, [
+		Player, Room
+	]);
 
-	// WOW
+	// End of Script
 });
